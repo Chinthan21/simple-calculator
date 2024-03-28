@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            background: hsl(0, 0%, 40%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cal-body {
+            background: rgb(70, 64, 70);
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cal-body form .display {
+            margin-bottom: 20px;
+        }
+
+        form .display input {
+            width: 100%;
+            border: 0;
+            outline: 0;
+            height: 7vh;
+            border-radius: 10px;
+            background: transparent;
+            font-size: 3vw;
+            color: #fff;
+            text-align: right;
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .cal-body form input {
+            border: 0;
+            outline: 0;
+            height: 7vh;
+            border-radius: 10px;
+            background: transparent;
+            font-size: 20px;
+            color: #fff;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        form input.equal, form input.clear, form input.red, form input.operator {
+            font-weight: 900;
+        }
+
+        form input.clear {
+            color: rgb(0, 255, 106);
+        }
+        form input.red {
+            color: #ff5100;
+        }
+
+        form input.operator {
+            color: rgb(23, 167, 143);
+        }
+
+        form input.equal {
+            grid-column: span 2;
+            color: antiquewhite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="cal-body">
+            <form>
+                <div class="display">
+                    <input type="text" name="display">
+                </div>
+                <div class="buttons-grid">
+                    <input type="button" value="AC" onclick="display.value = ''" class="clear">
+                    <input type="button" value="DEL" onclick="display.value = display.value.toString().slice(0, -1)"
+                        class="red">
+                    <input type="button" value="." onclick="display.value += '.'" class="operator">
+                    <input type="button" value="/" onclick="display.value += '/'" class="operator">
+                    <input type="button" value="7" onclick="display.value += '7'">
+                    <input type="button" value="8" onclick="display.value += '8'">
+                    <input type="button" value="9" onclick="display.value += '9'">
+                    <input type="button" value="*" onclick="display.value += '*'" class="operator">
+                    <input type="button" value="4" onclick="display.value += '4'">
+                    <input type="button" value="5" onclick="display.value += '5'">
+                    <input type="button" value="6" onclick="display.value += '6'">
+                    <input type="button" value="-" onclick="display.value += '-'" class="operator">
+                    <input type="button" value="1" onclick="display.value += '1'">
+                    <input type="button" value="2" onclick="display.value += '2'">
+                    <input type="button" value="3" onclick="display.value += '3'">
+                    <input type="button" value="+" onclick="display.value += '+'" class="operator">
+                    <input type="button" value="00" onclick="display.value += '00'">
+                    <input type="button" value="0" onclick="display.value += '0'">
+                    <input type="button" value="=" onclick="calculateResult()" class="equal">
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function calculateResult() {
+            const display = document.querySelector("input[name='display']");
+            try {
+                display.value = eval(display.value);
+            } catch (error) {
+                display.value = "Error";
+            }
+        }
+        document.addEventListener("keydown", function (event) {
+            const display = document.querySelector("input[name='display']");
+            let key = event.key;
+            if (
+                (key >= "0" && key <= "9") ||
+                "+-*/.".includes(key) ||
+                key === "Enter" ||
+                key === "Backspace"
+            ) {
+                if (key === "Enter") {
+                    calculateResult();
+                    return; // Prevent adding 'Enter' key as value
+                }
+                if (key === "Backspace") {
+                    display.value = display.value.toString().slice(0, -1);
+                    return; // Prevent adding 'Backspace' key as value
+                }
+                display.value += key;
+            }
+        });
+    </script>
+</body>
+
+</html>
